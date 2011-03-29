@@ -28,6 +28,10 @@ def thread(id):
     t = api.threads.details(thread=id)
     return bottle.template('thread.tpl', shortname=shortname, id=id, thread=t.__dict__['response'])
 
+@bottle.route('/static/:path#.+#')
+def server_static(path):
+    return bottle.static_file(path, root='./static')
+
 app = bottle.app()
 app.catchall = False #Now most exceptions are re-raised within bottle.
 bottle.run(host='184.82.108.14', port=80, app=app)
