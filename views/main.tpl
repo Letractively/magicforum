@@ -1,6 +1,9 @@
 <body style="width: 860px; margin: auto">
 <h1>Magical Mistery Forum</h1>
 <div>
+%if msg: 
+    <h2>{{msg}}</h2>
+%end
 <form method="POST" action="/new">
 <b>NEW THREAD</b>
 <input type=text name=title>
@@ -21,6 +24,8 @@
     </div>
     </div>
 % end
+<hr>
+<center>(c) Roberto Alsina -- http://magicforum.googlecode.com</center>
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
     var disqus_shortname = '{{shortname}}'; // required: replace example with your forum shortname

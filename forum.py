@@ -4,15 +4,19 @@ import json
 shortname = 'magicmisteryforum'
 api = disqus.DisqusAPI(open("key").read().strip())
 
-@bottle.route('/')
+@bottle.route('/', method='GET')
 def index():
+    msg = bottle.request.GET.get('msg', '')
     threads = api.forums.listThreads(forum=shortname, limit=100)
     print threads[0]
-    return bottle.template('main.tpl', threads=threads, shortname=shortname)
+    return bottle.template('main.tpl', threads=threads, shortname=shortname, msg=msg)
 
 @bottle.route('/new', method='POST')
 def new():
-    title = bottle.request.forms.get('title')
+    title = bottle.request.forms.get('title', None)
+    if not title:
+        bottle.redirect('/?msg=Missing%20Thread%20Name')
+        return
     thread = api.threads.create(forum=shortname, title = title)
     thread_id = thread.__dict__['response']['id']
     # Redirecting to /thread/thread_id doesn't work 
