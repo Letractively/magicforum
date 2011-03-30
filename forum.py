@@ -1,14 +1,13 @@
 import bottle
 import disqusapi as disqus
-import json
+import time
 shortname = 'magicmisteryforum'
 api = disqus.DisqusAPI(open("key").read().strip())
 
 @bottle.route('/', method='GET')
 def index():
     msg = bottle.request.GET.get('msg', '')
-    threads = api.forums.listThreads(forum=shortname, limit=100)
-    print threads[0]
+    threads = api.threads.list(forum=shortname, limit=25)
     return bottle.template('main.tpl', threads=threads, shortname=shortname, msg=msg)
 
 @bottle.route('/new', method='POST')
@@ -18,9 +17,12 @@ def new():
         bottle.redirect('/?msg=Missing%20Thread%20Name')
         return
     thread = api.threads.create(forum=shortname, title = title)
+    print "THREAD", thread
     thread_id = thread.__dict__['response']['id']
+    #api.posts.create(thread=thread_id, message="Post about %s here!"%title)
     # Redirecting to /thread/thread_id doesn't work 
     # because threads take a few seconds to appear on the listing
+    #bottle.redirect('/thread/%s'%thread_id)
     bottle.redirect('/')
 
 @bottle.route('/thread/:id')

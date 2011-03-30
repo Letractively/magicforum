@@ -9,23 +9,25 @@
 </head>
 <body style="width: 860px; margin: auto">
 <h1>Magical Mistery Forum</h1>
-<div>
 %if msg: 
     <div class="error">
     {{msg}}
     </div>
 %end
-<form method="POST" action="/new">
-<b>NEW THREAD</b>
-<input type=text name=title>
-<button class="submit">Create</button><br>
-<span class="small">When you create a thread, it may take a minute to appear on the list.</span>
-</div>
 </hr>
 <div>
 <script type="text/javascript" src="http://magicmisteryforum.disqus.com/combination_widget.js?num_items=5&hide_mods=0&color=blue&default_tab=people&excerpt_length=200"></script><a href="http://disqus.com/">Powered by Disqus</a>
 </div>
 
+<div>
+<form method="POST" action="/new">
+<span class="loud">New Thread Title:</b>
+<input type=text name=title>
+<input type="submit" value="Create">
+<div class="error">When you create a thread, it may take a minute to appear on the list.</br>
+All threads and posts will be deleted every hour, this is a test site only
+</div>
+</div>
 % for t in threads:
     %if t['title'].startswith('http://'): continue
     <div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;">
