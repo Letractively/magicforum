@@ -25,7 +25,7 @@
 <input type=text name=title>
 <input type="submit" value="Create">
 <div class="error">When you create a thread, it may take a minute to appear on the list.</br>
-All threads and posts will be deleted every hour, this is a test site only
+All threads and posts will be deleted every now and then, this is a test site only.
 </div>
 </div>
 % for t in threads:
