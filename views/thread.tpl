@@ -8,7 +8,7 @@
 <title>{{thread['title']}}</title>
 </head>
 <div>
-<a href="/"> Back to Thread List</a>
+<a href="javascript:history.back(1)">Back to Thread List</a>
 </div>
 <body style="width: 860px; margin: auto">
 <h1>Magical Mistery Forum</h1>

@@ -29,7 +29,7 @@ All threads and posts will be deleted every hour, this is a test site only
 </div>
 </div>
 % for t in threads:
-    %if t['title'].startswith('http://'): continue
+    %if not t['identifiers'] or t['identifiers'][0] != t['title']: continue 
     <div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;">
     <a href="/thread/{{t['id']}}">{{t['title']}}</a>  [ <a href="/thread/{{t['id']}}#disqus_thread" data-disqus-identifier="{{t['id']}}">#</a>]
     <div class="small">
