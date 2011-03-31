@@ -1,8 +1,10 @@
 import bottle
 import disqusapi as disqus
 import time
-shortname = 'magicmisteryforum'
-api = disqus.DisqusAPI(open("key").read().strip())
+shortname = 'forum2'
+key = (open("key").read().strip()
+api = disqus.DisqusAPI(key)
+url = "http://foro.netmanagers.com.ar:81"
 
 @bottle.route('/', method='GET')
 def index():
@@ -16,8 +18,7 @@ def new():
     if not title:
         bottle.redirect('/?msg=Missing%20Thread%20Name')
         return
-    thread = api.threads.create(forum=shortname, title = title)
-    print "THREAD", thread
+    thread = api.threads.create(forum=shortname, title = title, identifier = title)
     thread_id = thread.__dict__['response']['id']
     #api.posts.create(thread=thread_id, message="Post about %s here!"%title)
     # Redirecting to /thread/thread_id doesn't work 
@@ -36,4 +37,4 @@ def server_static(path):
 
 app = bottle.app()
 app.catchall = False #Now most exceptions are re-raised within bottle.
-bottle.run(host='184.82.108.14', port=80, app=app)
+bottle.run(host='184.82.108.14', port=81, app=app)
