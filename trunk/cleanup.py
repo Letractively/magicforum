@@ -8,4 +8,5 @@ for t in api.threads.list(forum='magicmisteryforum', limit=100):
 for t in api.posts.list(forum='magicmisteryforum', limit=100):
     api.posts.remove(post=t['id'])
 
-api.threads.create(forum="magicmisteryforum", title="Feel free to create threads or post comments here.")
+t = "Feel free to create threads or post comments here."
+api.threads.create(forum="magicmisteryforum", title=t, identifier=t)
