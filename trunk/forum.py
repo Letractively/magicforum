@@ -2,13 +2,14 @@ import bottle
 import disqusapi as disqus
 import time
 shortname = 'magicmisteryforum'
+url = "http://foro.netmanagers.com.ar"
 api = disqus.DisqusAPI(open("key").read().strip())
 
 @bottle.route('/', method='GET')
 def index():
     msg = bottle.request.GET.get('msg', '')
     threads = api.threads.list(forum=shortname, limit=25)
-    return bottle.template('main.tpl', threads=threads, shortname=shortname, msg=msg)
+    return bottle.template('main.tpl', threads=threads, shortname=shortname, msg=msg, url=url)
 
 @bottle.route('/new', method='POST')
 def new():
@@ -16,7 +17,7 @@ def new():
     if not title:
         bottle.redirect('/?msg=Missing%20Thread%20Name')
         return
-    thread = api.threads.create(forum=shortname, title = title)
+    thread = api.threads.create(forum=shortname, title = title, identifier = title)
     print "THREAD", thread
     thread_id = thread.__dict__['response']['id']
     #api.posts.create(thread=thread_id, message="Post about %s here!"%title)
