@@ -1,12 +1,12 @@
 <head>
-  <link rel="stylesheet" href="/static/bluetrip/css/screen.css" type="text/css" media="screen, projection" />
-  <link rel="stylesheet" href="/static/bluetrip/css/print.css" type="text/css" media="print" />
+  <link rel="stylesheet" href="{{url}}/static/bluetrip/css/screen.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="{{url}}/static/bluetrip/css/print.css" type="text/css" media="print" />
   <!--[if IE]>
-    <link rel="stylesheet" href="/static/bluetrip/css/ie.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="{{url}}/static/bluetrip/css/ie.css" type="text/css" media="screen, projection" />
   <![endif]-->
-  <link rel="stylesheet" href="/static/bluetrip/css/style.css" type="text/css" media="screen, projection" />
-  <script type="text/javascript" src="/static/jx.js"></script>
-  <script type="text/javascript" src="/static/accordion.js"></script>
+  <link rel="stylesheet" href="{{url}}/static/bluetrip/css/style.css" type="text/css" media="screen, projection" />
+  <script type="text/javascript" src="{{url}}/static/jx.js"></script>
+  <script type="text/javascript" src="{{url}}/static/accordion.js"></script>
 <style type="text/css">
 * {
 	margin:0;
@@ -54,11 +54,6 @@ body {
 
 
 <h1>Magical Mistery Forum</h1>
-%if msg: 
-    <div class="error">
-    {{msg}}
-    </div>
-%end
 </hr>
 <div>
 
@@ -77,7 +72,7 @@ All threads and posts will be deleted every hour, this is a test site only
 
 
 <div id="basic-accordian" >
-<div id="threads-header" class="accordion_headings header_highlight" ><h3>Threads</h3></div>
+<div id="threads-header" class="accordion_headings header_highlight" ><h3>Threads</h3><a href="javascript:update_thread_list()">Refresh</a></div>
 <div id="threads-content" style="height: 800px; overflow: auto;"></div>
 
 <div id="discussion-header" class="accordion_headings header_highlight" ><h3>Discussion</h3></div>
@@ -94,7 +89,7 @@ All threads and posts will be deleted every hour, this is a test site only
 <script type="text/javascript">
 
 var update_thread_list = function() {
-jx.load("/listthreads",function(data){
+jx.load("{{url}}/listthreads",function(data){
 var threads = eval(data);
 var tdiv = document.getElementById('threads-content');
 tdiv.innerHTML = '' ;

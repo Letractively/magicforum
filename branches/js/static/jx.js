@@ -54,9 +54,9 @@ jx = {
 	
 					//Give the data to the callback function.
 					if(callback) callback(result);
-				} else { //An error occured
-					if(error) error(http.status);
-				}
+				} //else { //An error occured
+				//	if(error) error(http.status);
+				//}
 			}
 		}
 		http.send(null);

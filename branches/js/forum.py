@@ -6,10 +6,10 @@ key = open("key").read().strip()
 api = disqus.DisqusAPI(key)
 url = "http://foro.netmanagers.com.ar:81"
 
-@bottle.route('/', method='GET')
-def index():
-    msg = bottle.request.GET.get('msg', '')
-    return bottle.template('main.tpl', shortname=shortname, msg=msg, key=key)
+#@bottle.route('/', method='GET')
+#def index():
+#    msg = bottle.request.GET.get('msg', '')
+#    return bottle.template('main.tpl', shortname=shortname, msg=msg, key=key)
 
 @bottle.route('/listthreads', method='GET')
 def threads():
@@ -33,6 +33,12 @@ def new():
 @bottle.route('/static/:path#.+#')
 def server_static(path):
     return bottle.static_file(path, root='./static')
+
+
+# PRE-render the main page
+with open('static/main.html', 'w+') as f:
+    f.write(bottle.template('main.tpl', shortname=shortname, key=key, url=url))
+bottle.route('/')( lambda: bottle.static_file('main.html', root='./static'))
 
 app = bottle.app()
 app.catchall = False #Now most exceptions are re-raised within bottle.
