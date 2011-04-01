@@ -6,9 +6,53 @@
   <![endif]-->
   <link rel="stylesheet" href="/static/bluetrip/css/style.css" type="text/css" media="screen, projection" />
   <script type="text/javascript" src="/static/jx.js"></script>
+  <script type="text/javascript" src="/static/accordion.js"></script>
+<style type="text/css">
+* {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	margin:10px;
+}
+
+#basic-accordian{
+	border:5px solid #EEE;
+	padding:5px;
+}
+
+.accordion_headings{
+	padding:5px;
+	background:#99CC00;
+	color:#FFFFFF;
+	border:1px solid #FFF;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+.accordion_headings:hover{
+	background:#00CCFF;
+}
+
+.accordion_child{
+	padding:15px;
+	background:#EEE;
+}
+
+.header_highlight{
+	background:#00CCFF;
+}
+
+</style>
+
 <title>Magical Mistery Forum</title>
 </head>
 <body style="width: 860px; margin: auto">
+
+
 <h1>Magical Mistery Forum</h1>
 %if msg: 
     <div class="error">
@@ -30,20 +74,33 @@
 All threads and posts will be deleted every hour, this is a test site only
 </div>
 </div>
-<div id="threads">
+
+
+<div id="basic-accordian" >
+<div id="threads-header" class="accordion_headings header_highlight" >Threads</div>
+<div id="threads-content" style="height: 800px; overflow: auto;"></div>
+
+<div id="discussion-header" class="accordion_headings header_highlight" >Discussion</div>
+<div id="discussion-content">
+
+<iframe id="thread_frame" style="width: 100%; height: 650px;">
+</iframe>
+
 </div>
+</div>
+
 <hr>
 
 <script type="text/javascript">
 jx.load("/listthreads",function(data){
 var threads = eval(data);
-var tdiv = document.getElementById('threads');
+var tdiv = document.getElementById('threads-content');
 tdiv.innerHTML = '' ;
 for (i in threads) {
     var t = threads[i];
     if ( t['identifiers']) {
       if (t['identifiers'][0] == t['title']) {
-        tdiv.innerHTML += '<div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;"><a href="/thread/'+t['id']+'">'+t['title']+'</a> [ <a href="/thread/'+t['id']+'#disqus_thread" data-disqus-identifier="'+t['id']+'">#</a>]</div>';
+        tdiv.innerHTML += '<div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;"><a href="javascript:update_thread('+t['id']+')">'+t['title']+'</a> [ <a href="#disqus_thread" data-disqus-identifier="'+t['id']+'">#</a>]</div>';
       };
     };
 };
@@ -57,6 +114,13 @@ for (i in threads) {
 
 });
 
+var update_thread = function(tid) {
+    t_frame=document.getElementById('thread_frame');
+    t_frame.src = '/thread/'+tid;
+    document.getElementById('discussion-header').onclick();
+};
+new Accordian('basic-accordian',2,'header_highlight');
+document.getElementById('threads-header').onclick();
 
 </script>
 <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
