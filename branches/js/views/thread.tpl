@@ -18,7 +18,7 @@
 <script type="text/javascript">
     var disqus_shortname = '{{shortname}}';
     var disqus_identifier = '{{id}}';
-    var disqus_url = 'http://184.82.108.14/thread/{{id}}';
+//    var disqus_url = '{{url}}/thread/{{id}}';
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
