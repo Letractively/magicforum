@@ -30,11 +30,6 @@ def new():
     #bottle.redirect('/thread/%s'%thread_id)
     bottle.redirect('/')
 
-@bottle.route('/thread/:id')
-def thread(id):
-    t = api.threads.details(thread=id)
-    return bottle.template('thread.tpl', shortname=shortname, id=id, thread=t.__dict__['response'], url=url)
-
 @bottle.route('/static/:path#.+#')
 def server_static(path):
     return bottle.static_file(path, root='./static')

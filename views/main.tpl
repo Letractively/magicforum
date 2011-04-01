@@ -62,7 +62,7 @@ body {
 </hr>
 <div>
 
-<script type="text/javascript" src="http://magicmisteryforum.disqus.com/combination_widget.js?num_items=5&hide_mods=0&color=blue&default_tab=people&excerpt_length=200"></script><a href="http://disqus.com/">Powered by Disqus</a>
+<script type="text/javascript" src="http://{{shortname}}.disqus.com/combination_widget.js?num_items=5&hide_mods=0&color=blue&default_tab=people&excerpt_length=200"></script><a href="http://disqus.com/">Powered by Disqus</a>
 </div>
 
 <div>
@@ -77,10 +77,10 @@ All threads and posts will be deleted every hour, this is a test site only
 
 
 <div id="basic-accordian" >
-<div id="threads-header" class="accordion_headings header_highlight" >Threads</div>
+<div id="threads-header" class="accordion_headings header_highlight" ><h3>Threads</h3></div>
 <div id="threads-content" style="height: 800px; overflow: auto;"></div>
 
-<div id="discussion-header" class="accordion_headings header_highlight" >Discussion</div>
+<div id="discussion-header" class="accordion_headings header_highlight" ><h3>Discussion</h3></div>
 <div id="discussion-content">
 
 <iframe id="thread_frame" style="width: 100%; height: 650px;">
@@ -100,7 +100,7 @@ for (i in threads) {
     var t = threads[i];
     if ( t['identifiers']) {
       if (t['identifiers'][0] == t['title']) {
-        tdiv.innerHTML += '<div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;"><a href="javascript:update_thread('+t['id']+')">'+t['title']+'</a> [ <a href="#disqus_thread" data-disqus-identifier="'+t['id']+'">#</a>]</div>';
+        tdiv.innerHTML += '<div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;"><a href="javascript:update_thread('+t['id']+',\''+t['title']+'\')">'+t['title']+'</a> [ <a href="#disqus_thread" data-disqus-identifier="'+t['id']+'">#</a>]</div>';
       };
     };
 };
@@ -114,10 +114,22 @@ for (i in threads) {
 
 });
 
-var update_thread = function(tid) {
+var update_thread = function(tid, title) {
     t_frame=document.getElementById('thread_frame');
-    t_frame.src = '/thread/'+tid;
-    document.getElementById('discussion-header').onclick();
+    var doc = t_frame.contentDocument;
+    if (doc == undefined || doc == null)
+            doc = t_frame.contentWindow.document;
+        doc.open();
+        doc.write(
+'Aca abajo esta el JS <div id="disqus_thread"></div> <script type="text/javascript"> var disqus_shortname = "{{shortname}}"; var disqus_identifier = "'+tid+'";'+ '(function() { var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true; dsq.src = "http://" + disqus_shortname + ".disqus.com/embed.js"; (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq); })();'
+        );
+        doc.write('</scr');
+        doc.write('ipt>');
+        doc.close();       
+    //t_frame.src = '/thread/'+tid;
+    t_head = document.getElementById('discussion-header');
+    t_head.innerHTML='<h3>'+title+'</h3>';
+    t_head.onclick();
 };
 new Accordian('basic-accordian',2,'header_highlight');
 document.getElementById('threads-header').onclick();
