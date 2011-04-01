@@ -1,16 +1,20 @@
 import bottle
 import disqusapi as disqus
-import time
+import json
 shortname = 'forum2'
-key = (open("key").read().strip()
+key = open("key").read().strip()
 api = disqus.DisqusAPI(key)
 url = "http://foro.netmanagers.com.ar:81"
 
 @bottle.route('/', method='GET')
 def index():
     msg = bottle.request.GET.get('msg', '')
+    return bottle.template('main.tpl', shortname=shortname, msg=msg, key=key)
+
+@bottle.route('/listthreads', method='GET')
+def threads():
     threads = api.threads.list(forum=shortname, limit=25)
-    return bottle.template('main.tpl', threads=threads, shortname=shortname, msg=msg)
+    return json.dumps([t for t in threads])
 
 @bottle.route('/new', method='POST')
 def new():
@@ -29,7 +33,7 @@ def new():
 @bottle.route('/thread/:id')
 def thread(id):
     t = api.threads.details(thread=id)
-    return bottle.template('thread.tpl', shortname=shortname, id=id, thread=t.__dict__['response'])
+    return bottle.template('thread.tpl', shortname=shortname, id=id, thread=t.__dict__['response'], url=url)
 
 @bottle.route('/static/:path#.+#')
 def server_static(path):

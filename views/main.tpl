@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/static/bluetrip/css/ie.css" type="text/css" media="screen, projection" />
   <![endif]-->
   <link rel="stylesheet" href="/static/bluetrip/css/style.css" type="text/css" media="screen, projection" />
+  <script type="text/javascript" src="/static/jx.js"></script>
 <title>Magical Mistery Forum</title>
 </head>
 <body style="width: 860px; margin: auto">
@@ -16,6 +17,7 @@
 %end
 </hr>
 <div>
+
 <script type="text/javascript" src="http://magicmisteryforum.disqus.com/combination_widget.js?num_items=5&hide_mods=0&color=blue&default_tab=people&excerpt_length=200"></script><a href="http://disqus.com/">Powered by Disqus</a>
 </div>
 
@@ -28,45 +30,34 @@
 All threads and posts will be deleted every hour, this is a test site only
 </div>
 </div>
-% for t in threads:
-    %if not t['identifiers'] or t['identifiers'][0] != t['title']: continue
-    <div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;">
-    <a href="/thread/{{t['id']}}">{{t['title']}}</a>  [ <a href="/thread/{{t['id']}}#disqus_thread" data-disqus-identifier="{{t['id']}}">#</a>]
-    <div class="small">
-      <small>{{t['likes']}} likes -- {{t['dislikes']}} dislikes -- {{t['createdAt']}}</small>
-    </div>
-    </div>
-% end
+<div id="threads">
+</div>
 <hr>
-<center>(c) Roberto Alsina -- <a href="http://magicforum.googlecode.com">http://magicforum.googlecode.com</a></center>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = '{{shortname}}'; // required: replace example with your forum shortname
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
+<script type="text/javascript">
+jx.load("/listthreads",function(data){
+var threads = eval(data);
+var tdiv = document.getElementById('threads');
+tdiv.innerHTML = '' ;
+for (i in threads) {
+    var t = threads[i];
+    if ( t['identifiers']) {
+      if (t['identifiers'][0] == t['title']) {
+        tdiv.innerHTML += '<div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;"><a href="/thread/'+t['id']+'">'+t['title']+'</a> [ <a href="/thread/'+t['id']+'#disqus_thread" data-disqus-identifier="'+t['id']+'">#</a>]</div>';
+      };
+    };
+};
+    var disqus_shortname = '{{shortname}}'; 
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
         s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
-</script>
+
+});
 
 
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = '{{shortname}}';
-    var disqus_identifier = '267163529';
-    //var disqus_url = 'http://184.82.108.14/thread/{{id}}';
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-
-
-
 </body>
