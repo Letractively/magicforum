@@ -92,6 +92,8 @@ All threads and posts will be deleted every hour, this is a test site only
 <hr>
 
 <script type="text/javascript">
+
+var update_thread_list = function() {
 jx.load("/listthreads",function(data){
 var threads = eval(data);
 var tdiv = document.getElementById('threads-content');
@@ -113,6 +115,9 @@ for (i in threads) {
     }());
 
 });
+};
+
+update_thread_list();
 
 var update_thread = function(tid, title) {
     t_frame=document.getElementById('thread_frame');
@@ -121,7 +126,7 @@ var update_thread = function(tid, title) {
             doc = t_frame.contentWindow.document;
         doc.open();
         doc.write(
-'Aca abajo esta el JS <div id="disqus_thread"></div> <script type="text/javascript"> var disqus_shortname = "{{shortname}}"; var disqus_identifier = "'+tid+'";'+ '(function() { var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true; dsq.src = "http://" + disqus_shortname + ".disqus.com/embed.js"; (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq); })();'
+'<div id="disqus_thread"></div> <script type="text/javascript"> var disqus_shortname = "{{shortname}}"; var disqus_identifier = "'+tid+'";'+ '(function() { var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true; dsq.src = "http://" + disqus_shortname + ".disqus.com/embed.js"; (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq); })();'
         );
         doc.write('</scr');
         doc.write('ipt>');
