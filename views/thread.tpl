@@ -7,11 +7,7 @@
   <link rel="stylesheet" href="/static/bluetrip/css/style.css" type="text/css" media="screen, projection" />
 <title>{{thread['title']}}</title>
 </head>
-<div>
-<a href="/"> Back to Thread List</a>
-</div>
 <body style="width: 860px; margin: auto">
-<h1>Magical Mistery Forum</h1>
 <h2>{{thread['title']}}</h2>
 <hr>
 <div id="disqus_thread"></div>
