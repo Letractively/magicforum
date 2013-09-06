@@ -21,10 +21,7 @@ def new():
     print "THREAD", thread
     thread_id = thread['id']
     api.posts.create(thread=thread_id, message="Post about %s here!"%title)
-    # Redirecting to /thread/thread_id doesn't work
-    # because threads take a few seconds to appear on the listing
     bottle.redirect('/thread/%s'%thread_id)
-    bottle.redirect('/')
 
 @bottle.route('/thread/:id')
 def thread(id):
