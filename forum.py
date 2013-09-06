@@ -7,9 +7,9 @@ api = disqus.DisqusAPI(open("key").read().strip())
 
 @bottle.route('/', method='GET')
 def index():
-    msg = bottle.request.GET.get('msg', '')
+    message = bottle.request.GET.get('msg', None)
     threads = api.threads.list(forum=shortname, limit=25)
-    return bottle.template('main.tpl', threads=threads, shortname=shortname, msg=msg, url=url)
+    return bottle.template('main.tpl', threads=threads, shortname=shortname, message=message, url=url)
 
 @bottle.route('/new', method='POST')
 def new():
@@ -19,17 +19,17 @@ def new():
         return
     thread = api.threads.create(forum=shortname, title = title, identifier = title)
     print "THREAD", thread
-    thread_id = thread.__dict__['response']['id']
-    #api.posts.create(thread=thread_id, message="Post about %s here!"%title)
-    # Redirecting to /thread/thread_id doesn't work 
+    thread_id = thread['id']
+    api.posts.create(thread=thread_id, message="Post about %s here!"%title)
+    # Redirecting to /thread/thread_id doesn't work
     # because threads take a few seconds to appear on the listing
-    #bottle.redirect('/thread/%s'%thread_id)
+    bottle.redirect('/thread/%s'%thread_id)
     bottle.redirect('/')
 
 @bottle.route('/thread/:id')
 def thread(id):
     t = api.threads.details(thread=id)
-    return bottle.template('thread.tpl', shortname=shortname, id=id, thread=t.__dict__['response'])
+    return bottle.template('thread.tpl', shortname=shortname, id=id, thread=t)
 
 @bottle.route('/static/:path#.+#')
 def server_static(path):
@@ -37,4 +37,4 @@ def server_static(path):
 
 app = bottle.app()
 app.catchall = False #Now most exceptions are re-raised within bottle.
-bottle.run(host='184.82.108.14', port=80, app=app)
+bottle.run(host='0.0.0.0', port=8000, app=app)

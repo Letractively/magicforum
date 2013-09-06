@@ -1,54 +1,111 @@
-<head>
-  <link rel="stylesheet" href="/static/bluetrip/css/screen.css" type="text/css" media="screen, projection" />
-  <link rel="stylesheet" href="/static/bluetrip/css/print.css" type="text/css" media="print" />
-  <!--[if IE]>
-    <link rel="stylesheet" href="/static/bluetrip/css/ie.css" type="text/css" media="screen, projection" />
-  <![endif]-->
-  <link rel="stylesheet" href="/static/bluetrip/css/style.css" type="text/css" media="screen, projection" />
-<title>Magical Mistery Forum</title>
-</head>
-<body style="width: 860px; margin: auto">
-<h1>Magical Mistery Forum</h1>
-%if msg: 
-    <div class="error">
-    {{msg}}
-    </div>
-%end
-</hr>
-<div>
-<script type="text/javascript" src="http://magicmisteryforum.disqus.com/combination_widget.js?num_items=5&hide_mods=0&color=blue&default_tab=people&excerpt_length=200"></script><a href="http://disqus.com/">Powered by Disqus</a>
-</div>
+<!DOCTYPE html>
+<html lang="en">
 
-<div>
-<form method="POST" action="/new">
-<span class="loud">New Thread Title:</b>
-<input type=text name=title>
-<input type="submit" value="Create">
-<div class="error">When you create a thread, it may take a minute to appear on the list.</br>
-All threads and posts will be deleted every now and then, this is a test site only.
-</div>
-</div>
-% for t in threads:
-    %if not t['identifiers'] or t['identifiers'][0] != t['title']: continue 
-    <div class="large" style="border: 1px solid lightgray; margin: 1em; background-color: lightgreen; padding:1em;">
-    <a href="/thread/{{t['id']}}">{{t['title']}}</a>  [ <a href="/thread/{{t['id']}}#disqus_thread" data-disqus-identifier="{{t['id']}}">#</a>]
-    <div class="small">
-      <small>{{t['likes']}} likes -- {{t['dislikes']}} dislikes -- {{t['createdAt']}}</small>
-    </div>
-    </div>
-% end
-<hr>
-<center>(c) Roberto Alsina -- <a href="http://magicforum.googlecode.com">http://magicforum.googlecode.com</a></center>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = '{{shortname}}'; // required: replace example with your forum shortname
+  <head>
+    <meta charset="utf-8">
+    <title>
+      Magic Mystery Forum Demo
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link href="/static/jPages.css" rel="stylesheet">
+  </head>
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
-</body>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <h3 class="text-center">
+          Magic Mystery Forum Demo
+        </h3>
+      </div>
+      %if message is not None:
+      <div class="alert">
+        <p>
+          {{message}}
+        </p>
+      </div>
+      %end
+      <div class="row">
+        <div class="col-md-6">
+          <div>
+            <script type="text/javascript" src="http://magicmisteryforum.disqus.com/combination_widget.js?num_items=5&amp;hide_mods=0&amp;color=blue&amp;default_tab=people&amp;excerpt_length=200"
+            >
+            </script>
+            <a href="http://disqus.com/">Powered by Disqus</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <form action="/new" method="POST" role="form">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="New Thread Title"
+                name="title">
+            </div>
+            <button type="submit" class="btn btn-default"> Create! </button>
+          </form>
+          <hr>
+          <ul class="list-group" id="itemContainer">
+            % for t in threads:
+                %if not t['identifiers'] or t['identifiers'][0] != t['title']: continue
+            <li class="list-group-item">
+              <div class="pull-right">
+              <span class="label label-success">{{t['likes']}}</span>
+              <span class="label label-danger">{{t['dislikes']}}</span>
+              </div>
+              <a href="/thread/{{t['id']}}">{{t['title']}}</a>
+              [
+              <a href="/thread/{{t['id']}}#disqus_thread" data-disqus-identifier="{{t['id']}}">#</a>
+              ]
+              <small>
+                <br/>{{t['createdAt']}}
+              </small>
+            </li>
+            % end
+          </ul>
+          <div class="holder"></div>
+        </div>
+        <div class="col-md-4" style="display: none;">
+          <h3>
+            Span 4
+          </h3>
+          <p>
+            Content
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" >
+    </script>
+    <script src="/static/jPages.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/js/bootstrap.min.js" >
+    </script>
+    <div class="container">
+      <div>
+        <center>
+          (c) Roberto Alsina --
+          <a href="http://magicforum.googlecode.com">http://magicforum.googlecode.com</a>
+        </center>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+        $(function(){
+            $("div.holder").jPages({
+                containerID : "itemContainer",
+                perPage: 5
+            });
+        });
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = '{{shortname}}'; // required: replace example with your forum shortname
+           /* * * DON'T EDIT BELOW THIS LINE * * */
+           (function() {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+          }());
+  </script>
+</html>
